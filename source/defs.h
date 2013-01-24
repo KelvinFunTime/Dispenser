@@ -12,6 +12,9 @@
 //Number of pins available on the RPI
 #define	NUM_PINS	17
 
+//Pins
+#define CUP_PIN_1 7
+
 //Pin modes available
 #define	WPI_MODE_PINS		 0
 #define	WPI_MODE_GPIO		 1

@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <stdlib.h>
-#include <stdint.h>
 
 //Function available for accessing pins
 void portio(short pin_num, short direction, short * length, short * pwm, short * cmd);
