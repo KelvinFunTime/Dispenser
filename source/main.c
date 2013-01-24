@@ -9,12 +9,9 @@ void senseCups(void);
 void main(void)
 {
 	initSystem(void);
-	initCupPins(void);
-	
-	while(1)
-	{
-		senseCups(void);
-	}
+	initCupPins(&senseCups);
+
+	while(1);
 }
 
 void initSystem(void)
@@ -24,6 +21,13 @@ void initSystem(void)
 	while(setupCheck == -1)
 	{
 		// If you're stuck here, wiringPi failed to init
+	}
+	
+	setupCheck = piHiPri(99);
+	
+	while(setupCheck == -1)
+	{
+		// If you're stuck here, the Pi failed to be elevated to highest priority
 	}
 	
 	initCupPins(void);	// Cup buttons init

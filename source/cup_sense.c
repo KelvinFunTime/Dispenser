@@ -5,26 +5,26 @@
 #include <stdlib.h>
 #include "defs.h"
 
-void initCupPins(void);
-int senseCup(int cup);
+void initCupPins(void (*function)(void));
+void setCupISR(int cupPin, void (*function)(void));
+int senseCup(int cupPin);
 
-void initCupPins(void)
+void initCupPins(void (*function)(void))
 {
 	pinMode(CUP_PIN_1, INPUT);
 	pullUpDnControl(CUP_PIN_1, PUD_UP);
+	
+	setCupISR(CUP_PIN_1, function);
 }
 
-int senseCup(int cup)
+void setCupISR(int cupPin, void (*function)(void))
 {
-	int pin = 0;
-	
-	switch(cup)
-	{
-		case 1: pin = CUP_PIN_1; break;
-		default: pin = CUP_PIN_1;
-	}
-	
-	return digitalRead(pin);
+	wiringPiISR(cupPin, INT_EDGE_FALLING, function);
+}
+
+int senseCup(int cupPin)
+{
+	return digitalRead(cupPin);
 }
 
 #endif
