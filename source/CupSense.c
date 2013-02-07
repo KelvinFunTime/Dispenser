@@ -10,6 +10,12 @@ void initCupPins(void)
 {
 	pinMode(CUP_PIN_1, INPUT);
 	pullUpDnControl(CUP_PIN_1, PUD_UP);
+
+	pinMode(CUP_PIN_2, INPUT);
+	pullUpDnControl(CUP_PIN_2, PUD_UP);
+
+	pinMode(CUP_PIN_3, INPUT);
+	pullUpDnControl(CUP_PIN_3, PUD_UP);
 }
 
 int senseCup(int cupPin)
@@ -25,7 +31,7 @@ int senseCup(int cupPin)
 		case 3:
 			val = digitalRead(CUP_PIN_3); break;
 		default:
-			prinf("Invalid cup pin");
+			printf("Invalid cup pin");
 	}
 
 	return val;

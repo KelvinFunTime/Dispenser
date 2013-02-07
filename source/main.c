@@ -52,6 +52,7 @@ void senseCups(void)
 	// If cup is held down and hasn't been serviced
 	if(senseCup(1) == 0 && cup1serviced != 1)
 	{
+		printf("\nCup 1!!\n");
 		// Turn servo here
 		pumpAction();
 		cup1serviced = 1;
@@ -64,6 +65,7 @@ void senseCups(void)
 	if(senseCup(2) == 0 && cup2serviced != 1)
 	{
 		// Turn servo here
+		printf("\nCup 2\n");
 		pumpAction();
 		cup2serviced = 1;
 	}
@@ -74,6 +76,7 @@ void senseCups(void)
 	
 	if(senseCup(3) == 0 && cup3serviced != 1)
 	{
+		printf("\nCup 3\n");
 		// Turn servo here
 		pumpAction();
 		cup3serviced = 1;
@@ -86,6 +89,9 @@ void senseCups(void)
 
 void pumpAction(void)
 {
+	int pump = 0;
+	int interval = 0;
+
 	printf("\nCUP SENSED\n");
 
 	pump = PumpSelect();

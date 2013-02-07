@@ -15,7 +15,7 @@
 
 //Pins
 #define CUP_PIN_1 	0
-#define CUP_PIN_2	2
+#define CUP_PIN_2	6
 #define CUP_PIN_3	3
 
 #define PUMP_PIN_1	4
