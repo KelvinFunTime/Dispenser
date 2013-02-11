@@ -5,12 +5,6 @@
 #include "PumpControllingSystem.h"
 
 void initSystem(void);
-void senseCups(void);
-void pumpAction(void);
-
-int cup1serviced = 0;
-int cup2serviced = 0;
-int cup3serviced = 0;
 
 int main(void)
 {
@@ -44,61 +38,3 @@ void initSystem(void)
 	}
 }
 
-void senseCups(void)
-{
-	int pump = 0;
-	int interval = 0;
-
-	// If cup is held down and hasn't been serviced
-	if(senseCup(1) == 0 && cup1serviced != 1)
-	{
-		printf("\nCup 1!!\n");
-		// Turn servo here
-		pumpAction();
-		cup1serviced = 1;
-	}
-	else if(senseCup(1) == 1)	// If cup spot is empty, clear serviced flag
-	{
-		cup1serviced = 0;
-	}
-	
-	if(senseCup(2) == 0 && cup2serviced != 1)
-	{
-		// Turn servo here
-		printf("\nCup 2\n");
-		pumpAction();
-		cup2serviced = 1;
-	}
-	else if(senseCup(2) == 1)
-	{
-		cup2serviced = 0;
-	}
-	
-	if(senseCup(3) == 0 && cup3serviced != 1)
-	{
-		printf("\nCup 3\n");
-		// Turn servo here
-		pumpAction();
-		cup3serviced = 1;
-	}
-	else if(senseCup(3) == 1)
-	{
-		cup3serviced = 0;
-	}
-}
-
-void pumpAction(void)
-{
-	int pump = 0;
-	int interval = 0;
-
-	printf("\nCUP SENSED\n");
-
-	pump = PumpSelect();
-
-	interval = SetCupSize();
-
-	PumpControl(pump, interval);
-	
-	printf("\nThank You, Come Again!\n");
-}

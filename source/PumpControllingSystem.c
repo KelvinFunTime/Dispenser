@@ -110,3 +110,17 @@ void initPumpPins (void)
 	digitalWrite (PUMP_PIN_1, 0);	// make sure pump 1 is off
 	digitalWrite (PUMP_PIN_2, 0);	// make sure pump 2 is off
 }
+
+void pumpAction(void)
+{
+	int pump = 0;
+	int interval = 0;
+
+	pump = PumpSelect();
+
+	interval = SetCupSize();
+
+	PumpControl(pump, interval);
+	
+	printf("\nThank You, Come Again!\n");
+}

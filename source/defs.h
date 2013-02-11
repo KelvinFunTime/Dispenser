@@ -6,8 +6,8 @@
 ****************************************************************/
 
 //Calculated debounce for button and cup
-#define USER_PRESS_DEBOUNCE_LENGTH	437500
-#define CUP_SENSE_DEBOUNCE_LENGTH 	875000
+#define USER_PRESS_DEBOUNCE_LENGTH	437500	// needs to be in seconds!
+#define CUP_SENSE_DEBOUNCE_LENGTH 	10000 // 10 ms
 #define PI_CLOCK 					700000000
 
 //Number of pins available on the RPI

@@ -37,4 +37,80 @@ int senseCup(int cupPin)
 	return val;
 }
 
+void senseCups(void)
+{
+	static int cup1serviced = 0;
+	static int cup2serviced = 0;
+	static int cup3serviced = 0;
+	int button1debounce = 0;
+	int button2debounce = 0;
+	int button3debounce = 0;
+	int pump = 0;
+	int interval = 0;
+
+	// If cup is held down and hasn't been serviced
+	if(senseCup(1) == 0 && cup1serviced != 1)
+	{
+		printf("\nCup 1!!\n");
+		// Turn servo here
+		pumpAction();
+		cup1serviced = 1;
+	}
+	else if(senseCup(1) == 1)	// If cup spot is empty, clear serviced flag
+	{
+		button1debounce = debounce (1, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
+		
+		if (button1debounce == 1)	// if we had a valid removal
+		{
+			cup1serviced = 0;
+			button1debounce = 0;
+			
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+		}
+	}
+	
+	if(senseCup(2) == 0 && cup2serviced != 1)
+	{
+		// Turn servo here
+		printf("\nCup 2\n");
+		pumpAction();
+		cup2serviced = 1;
+	}
+	
+	else if(senseCup(2) == 1)	// If cup spot is empty, clear serviced flag
+	{
+		button2debounce = debounce (2, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
+		
+		if (button2debounce == 1)	// if we had a valid removal
+		{
+			cup2serviced = 0;
+			button2debounce = 0;
+			
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+		}
+	}
+	
+	if(senseCup(3) == 0 && cup3serviced != 1)
+	{
+		printf("\nCup 3\n");
+		// Turn servo here
+		pumpAction();
+		cup3serviced = 1;
+	}
+	
+	else if(senseCup(3) == 1)	// If cup spot is empty, clear serviced flag
+	{
+		button3debounce = debounce (3, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
+		
+		if (button3debounce == 1)	// if we had a valid removal
+		{
+			cup1serviced = 0;
+			button3debounce = 0;
+			
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+		}
+	}
+}
+
+
 #endif
