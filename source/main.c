@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "CupSense.h"
 #include "PumpControllingSystem.h"
+#include "defs.h"
 
 void initSystem(void);
 
@@ -37,4 +38,6 @@ void initSystem(void)
 		// If you're stuck here, the Pi failed to be elevated to highest priority
 	}
 }
+
+
 
