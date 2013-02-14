@@ -1,22 +1,27 @@
 #include <stdio.h>
+#include <errno.h>
 #include <string.h>
 #include <wiringPi.h>
-#include <softPwm.h>
 
-//#define PWN_PIN 12	// gpio 18, pi 12
-//#define PWM_OUTPUT	2
-#define SW_PWM 0 //(gpio 0, pin 11)
+#define PWN_PIN 12	// gpio 18, pi 12
+#define	PWM_OUTPUT	2
+
 int main ()
 {
-	// pinMode(PWM_PIN,PWM_OUTPUT); //setup hardware pwm
-	softPwmCreate(SW_PWM,0,100); //setup software pwm pin 
-
+	int i = 0;
+	int j = 20;
+	
+	 pinMode(PWM_PIN,PWM_OUTPUT); //setup hardware pwm
+	
 	if ( wiringPiSetup() == -1 )
 		return 1;
 		
-	softPwmWrite (SW_PWM, 500);	
-
-	while (1);
+	
+	for (i = 0; i < j; i++)
+	{
+		pwnWrite (PWM_PIN, i);
+	}
+	
 	
 	return 0;
 }

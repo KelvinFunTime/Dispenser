@@ -56,7 +56,7 @@ void senseCups(void)
 		pumpAction();
 		cup1serviced = 1;
 	}
-	else if (senseCup(1) == 1 && cup1serviced == 1)
+	else if(senseCup(1) == 1)	// If cup spot is empty, clear serviced flag
 	{
 		button1debounce = debounce (1, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
 		
@@ -65,7 +65,7 @@ void senseCups(void)
 			cup1serviced = 0;
 			button1debounce = 0;
 			
-			//usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
 		}
 	}
 	
@@ -77,7 +77,7 @@ void senseCups(void)
 		cup2serviced = 1;
 	}
 	
-	else if(senseCup(2) == 1 && cup2serviced == 1)	// If cup spot is empty, clear serviced flag
+	else if(senseCup(2) == 1)	// If cup spot is empty, clear serviced flag
 	{
 		button2debounce = debounce (2, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
 		
@@ -86,7 +86,7 @@ void senseCups(void)
 			cup2serviced = 0;
 			button2debounce = 0;
 			
-			//usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
 		}
 	}
 	
@@ -98,18 +98,19 @@ void senseCups(void)
 		cup3serviced = 1;
 	}
 	
-	else if(senseCup(3) == 1 && cup3serviced == 1)	// If cup spot is empty, clear serviced flag
+	else if(senseCup(3) == 1)	// If cup spot is empty, clear serviced flag
 	{
 		button3debounce = debounce (3, CUP_SENSE_DEBOUNCE_LENGTH, 1);	// makes sure the button was released
 		
 		if (button3debounce == 1)	// if we had a valid removal
 		{
-			cup3serviced = 0;
+			cup1serviced = 0;
 			button3debounce = 0;
 			
-			//usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
+			usleep (2000000);	// NEED THREADS to function correct! it sleeps for 2 seconds before next cup can be placed here
 		}
 	}
 }
+
 
 #endif
