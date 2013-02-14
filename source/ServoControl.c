@@ -3,8 +3,8 @@
 #include <string.h>
 #include <wiringPi.h>
 
-#define PWN_PIN 12	// gpio 18, pi 12
-#define	PWM_OUTPUT	2
+//#define PWN_PIN 12	// gpio 18, pi 12
+//#define	PWM_OUTPUT	2
 #define SW_PWM 0 //(gpio 0, pin 11)
 int main ()
 {
@@ -16,12 +16,7 @@ int main ()
 	if ( wiringPiSetup() == -1 )
 		return 1;
 		
-	
-	for (i = 0; i < j; i++)
-	{
-		softpwnWrite (SW_PWM, i);
-	}
-	
+	softpwnWrite (SW_PWM, 500);	
 	
 	return 0;
 }
