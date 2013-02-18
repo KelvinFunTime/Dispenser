@@ -74,4 +74,3 @@ void service_thread(port_args Args)
 		//Sleep to free up resources for other threads
 	}
 }
-
