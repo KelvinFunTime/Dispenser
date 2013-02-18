@@ -20,11 +20,11 @@
 #include "PortIO_Thread.h"
 
 //Sets compatability for pthread
-#define pin_num 	Args.pin_num
-#define deb_length 	Args.deb_length
-#define data 		Args.data
-#define drink_size 	Args.drink_size
-#define pump_sel 	Args.pump_sel
+#define pin_num 	*Args.pin_num
+#define deb_length 	*Args.deb_length
+#define data 		*Args.data
+#define drink_size 	*Args.drink_size
+#define pump_sel 	*Args.pump_sel
 
 /***************************************************************
 *Name: 
@@ -37,7 +37,7 @@
 *	*data is updated whenever a pin goes high
 ****************************************************************/
 
-void service_thread(port_args Args)
+void service_thread(port_args * Args)
 {
 	pinMode (pin_num, INPUT);
 	short temp = T_KILL;
@@ -61,10 +61,12 @@ void service_thread(port_args Args)
 				//Assert pin for read from managing thread
 				temp = *data += pin_to_data;
 				
+				printf("Cup key has been detected");
+				
 				//Servo stuff goes here
 				
 				piLock(PMP_KEY);
-				PumpControl( *pump_sel, *drink_size );
+				//PumpControl( *pump_sel, *drink_size );
 				piUnlock(PMP_KEY);
 				
 				piUnlock(CUP_KEY);
