@@ -1,12 +1,12 @@
-#include "CupSenseT.h"
 #include "PortIO_Thread.h"
+#include "CupSenseT.h"
 #include "defs.h"
 #include <wiringPi.h>
 #include <pthread.h>
 
 port_args cup_args;
 
-void init_cup_pins( pthread_t * t)
+void init_cup_pins(pthread_t * t)
 {
 	//Set static pointers for thread stuff
 	
@@ -16,13 +16,18 @@ void init_cup_pins( pthread_t * t)
 	cup_args.drink_size = 0;
 	cup_args.pump_sel = 0;
 	
-	
+	piLock(CUP_KEY);
 	cup_args.pin_num = CUP_PIN_1;	
-	pthread_create(t[0], NULL, port_input, &cup_args);
+	pthread_create(&t[0], NULL, service_thread, (void *)(&cup_args) );
+	piUnlock(CUP_KEY);
+	piLock(CUP_KEY);
 	cup_args.pin_num = CUP_PIN_2;
-	pthread_create(t[1], NULL, port_input, &cup_args);
+	pthread_create(&t[1], NULL, service_thread, (void *)(&cup_args) );
+	piUnlock(CUP_KEY);
+	piLock(CUP_KEY);
 	cup_args.pin_num = CUP_PIN_3;
-	pthread_create(t[2], NULL, port_input, &cup_args);
+	pthread_create(&t[2], NULL, service_thread, (void *)(&cup_args) );
+	piUnlock(CUP_KEY);
 }
 
 /***************************************************************
@@ -47,7 +52,7 @@ void init_cup_service()
 
 void set_cup_data( short cup_data )
 {
-	cup_args.cup_data = cup_data;
+	cup_args.data = cup_data;
 }
 
 void set_drink_size( short drink_size )
@@ -62,5 +67,5 @@ void set_pump_sel( short pump_sel )
 
 short get_cup_data()
 {
-	return cup_args.cup_data;
+	return cup_args.data;
 }

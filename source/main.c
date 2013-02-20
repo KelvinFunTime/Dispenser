@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <stdlib.h>
-#include "CupSense.h"
 #include "PumpControllingSystem.h"
 #include "CupSenseT.h"
 
@@ -10,7 +9,6 @@ void initSystem(void);
 int main(void)
 {
 	initSystem();
-	initCupPins();
 	initPumpPins();
 	init_cup_service();
 	
