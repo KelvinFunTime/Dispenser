@@ -1,16 +1,3 @@
-/***************************************************************
-*Purpose:
-*	Contains thread used for portio.
-*
-*Inputs:
-*	Receives commands from main_thread (pwm, pin number, etc)
-*
-*Outputs:
-*	Sends out IO through the pins and can clear commands from
-*	main_thread
-*
-****************************************************************/
-
 #include <stdio.h>
 #include <wiringPi.h>
 #include <stdlib.h>
@@ -18,13 +5,6 @@
 #include "defs.h"
 #include "debounce.c"
 #include "PortIO_Thread.h"
-
-//Sets compatability for pthread
-#define pin_num 	*Args.pin_num
-#define deb_length 	*Args.deb_length
-#define data 		*Args.data
-#define drink_size 	*Args.drink_size
-#define pump_sel 	*Args.pump_sel
 
 /***************************************************************
 *Name: 
@@ -37,36 +17,36 @@
 *	*data is updated whenever a pin goes high
 ****************************************************************/
 
-void service_thread(port_args * Args)
+void service_thread(port_args * args)
 {
-	pinMode (pin_num, INPUT);
+	pinMode (*args.pin_num, INPUT);
 	short temp = T_KILL;
 	//Creates a binary 001, 010, or 100, based on pin number
-	short pin_to_data = 1 << (pin_num / 3);
+	short pin_to_data = 1 << (*args.pin_num / 3);
 	
 	//While the thread don't kill bit is high
 	while (temp & T_KILL)
 	{
 		//Lock *data for this read
 		piLock(CUP_KEY);
-		temp = *data;
+		temp = *args.data;
 		piUnlock(CUP_KEY);
 		//If a pin is found and data doesn't already have this pin
 		//wait until main clears bit for servicing
-		if ( !digitalRead(pin_num) &&  !(temp & pin_to_data) )
+		if ( !digitalRead(*args.pin_num) &&  !(temp & pin_to_data) )
 			//If pin is still being held after debounce
-			if ( debounce(pin_num, deb_length, LOW) );
+			if ( debounce(*args.pin_num, *args.deb_length, LOW) );
 			{
 				piLock(CUP_KEY);
 				//Assert pin for read from managing thread
-				temp = *data += pin_to_data;
+				temp = *args.data += pin_to_data;
 				
 				printf("Cup key has been detected");
 				
 				//Servo stuff goes here
 				
 				piLock(PMP_KEY);
-				//PumpControl( *pump_sel, *drink_size );
+				//PumpControl( *args.pump_sel, *args.drink_size );
 				piUnlock(PMP_KEY);
 				
 				piUnlock(CUP_KEY);

@@ -1,4 +1,10 @@
 #include "CupSenseT.h"
+#include "PortIO_Thread.h"
+#include "defs.h"
+#include <wiringPi.h>
+#include <pthread.h>
+
+port_args cup_args;
 
 void init_cup_pins( pthread_t * t)
 {
@@ -36,7 +42,7 @@ void init_cup_service()
 	int temp = 0;
 	
 	if ( t[0] )
-		init_cup_pins(t, cup_data, drink_size, pump_sel);
+		init_cup_pins(t);
 }
 
 void set_cup_data( short cup_data )
