@@ -25,13 +25,12 @@ void * service_thread(void * ptr_args)
 	piLock(CUP_KEY);
 	short pin_num = args->pin_num;
 	short deb_length = args->deb_length;
-	pinMode (pin_num, INPUT);
-	short temp = T_KILL;
+	short temp = 0;
 	//Creates a binary 001, 010, or 100, based on pin number
 	short pin_to_data = 1 << (pin_num / 3);
 	piUnlock(CUP_KEY);
 	//While the thread don't kill bit is high
-	while (temp & T_KILL)
+	while (!(temp & T_KILL))
 	{
 		//Lock *data for this read
 		piLock(CUP_KEY);
@@ -39,15 +38,16 @@ void * service_thread(void * ptr_args)
 		piUnlock(CUP_KEY);
 		//If a pin is found and data doesn't already have this pin
 		//wait until main clears bit for servicing
-		if ( !digitalRead(pin_num) &&  !(temp & pin_to_data) )
+		if ( (digitalRead(pin_num) == 0) && !(temp & pin_to_data) )
+		{
 			//If pin is still being held after debounce
-			if ( debounce(pin_num, deb_length, LOW) );
+			if ( debounce(pin_num, deb_length, LOW) )
 			{
 				piLock(CUP_KEY);
 				//Assert pin for read from managing thread
-				temp = args->data += pin_to_data;
+				temp = args->data = args->data | pin_to_data;
 				
-				printf("Cup key has been detected");
+				printf("Cu‎p %d pin has been detected\n", pin_num);
 				
 				//Servo stuff goes here
 				
@@ -58,7 +58,9 @@ void * service_thread(void * ptr_args)
 				piUnlock(CUP_KEY);
 				sleep(2);//sleep thread for two seconds
 			}
+		}
 		//Nothing new was found or has already been found
-		//Sleep to free up resources for other threads
+		else
+			usleep(500);
 	}
 }
