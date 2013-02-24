@@ -11,11 +11,10 @@ void initSystem(void);
 
 int main(void)
 {
-	printf("Spinning up threads\n");
 	initSystem();
 	initPumpPins();
 	initCupPins();
-
+	printf("Spinning up threads\n");
 	init_cup_service();
 	
 	while(1)
