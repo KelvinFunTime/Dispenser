@@ -35,6 +35,8 @@
 #define PUMP_PIN_1	7
 #define PUMP_PIN_2	5
 
+#define PWM_PIN		1
+
 //Pin modes available
 #define	WPI_MODE_PINS		 0
 #define	WPI_MODE_GPIO		 1
