@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include "defs.h"
 #include "debounce.h"
+#include "ServoControl.h"
 
 /***************************************************************
 *Name: 
@@ -49,11 +50,14 @@ void * service_thread(void * ptr_args)
 				
 				printf("Cu‎p %d pin has been detected\n", pin_num);
 				
-				//Servo stuff goes here
+				//Servo control
+				pwm_control( 90 + (20 * pin_num) );
 				
 				piLock(PMP_KEY);
+				printf("Locking pump\n");
 				//PumpControl( args->pump_sel, args->drink_size );
 				piUnlock(PMP_KEY);
+				printf("Unlocking pump\n");
 				
 				piUnlock(CUP_KEY);
 				sleep(2);//sleep thread for two seconds
