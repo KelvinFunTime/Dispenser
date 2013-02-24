@@ -6,6 +6,7 @@ class IphoneChat(Protocol):
 	latestData = "Full"
 	
 	def connectionMade(self):
+		print "Connection made"
 		self.factory.clients.append(self)
 	
 	def connectionLost(self, reason):
