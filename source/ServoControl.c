@@ -1,23 +1,20 @@
-#include <stdio.h>
-#include <string.h>
 #include <wiringPi.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <unistd.h>
+#include "ServoControl.h"
+#include "defs.h"
 
-#define PWM_PIN 1	// gpio 18, pi 12
-
-int main ()
+int pwm_control(short pos)
 {
 	int i = 0;
-	int j = 30;
-
-	if ( wiringPiSetup() == -1 )
+	if ( wiringPiSetupGpio() == -1 )	// sets up the wiring pi
 		return 1;
-
-	pinMode(PWM_PIN,PWM_OUTPUT); //setup hardware pwm
 	
-	for (i = 0; i < j; i++)
-		pwmWrite (PWM_PIN, i);
+	system("gpio pwm-ms");
+	system("gpio pwmc 200");
+	system("gpio pwm 1 %d", pos);
 
-	while (1);
-	
 	return 0;
 }
