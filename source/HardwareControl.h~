@@ -1,0 +1,8 @@
+typedef struct soft_args
+{
+	//data that is controlled by gui goes here
+} soft_args;
+
+extern void enterControl(void);
+extern void initSystem(void);
+extern void initServo(void);

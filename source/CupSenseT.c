@@ -4,6 +4,7 @@
 #include <wiringPi.h>
 #include <pthread.h>
 #include <stdio.h>
+#include "unistd.h"
 
 port_args cup_args;
 
@@ -16,6 +17,15 @@ void init_cup_pins(pthread_t * t)
 	cup_args.deb_length = CUP_SENSE_DEBOUNCE_LENGTH;
 	cup_args.drink_size = 0;
 	cup_args.pump_sel = 0;
+
+	pinMode(CUP_PIN_1, INPUT);
+	pullUpDnControl(CUP_PIN_1, PUD_UP);
+
+	pinMode(CUP_PIN_2, INPUT);
+	pullUpDnControl(CUP_PIN_2, PUD_UP);
+
+	pinMode(CUP_PIN_3, INPUT);
+	pullUpDnControl(CUP_PIN_3, PUD_UP);
 
 	printf("Spinning up thread 1\n");
 	piLock(CUP_KEY);

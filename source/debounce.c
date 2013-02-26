@@ -1,6 +1,7 @@
 #include "defs.h"
 #include <wiringPi.h>
 #include "debounce.h"
+#include "unistd.h"
 
 /***************************************************************
 *Debounce maybe? This is a late game addition.

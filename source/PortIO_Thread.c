@@ -6,6 +6,7 @@
 #include "defs.h"
 #include "debounce.h"
 #include "ServoControl.h"
+#include "unistd.h"
 
 /***************************************************************
 *Name: 
@@ -67,4 +68,5 @@ void * service_thread(void * ptr_args)
 		else
 			usleep(500);
 	}
+	return NULL;
 }

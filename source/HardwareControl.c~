@@ -5,12 +5,12 @@
 #include "CupSenseT.h"
 #include "defs.h"
 #include "CupSense.h"
+#include "HardwareControl.h"
 #include <pthread.h>
 
-void initSystem(void);
-void initServo(void);
+typedef struct soft_args soft_args;
 
-int main(void)
+void enterControl(void)
 {
 	initSystem();
 	initPumpPins();
