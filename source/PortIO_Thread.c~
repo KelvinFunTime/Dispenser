@@ -52,12 +52,7 @@ void * service_thread(void * ptr_args)
 				printf("Cu‎p %d pin has been detected\n", pin_num);
 				
 				//Servo control
-				if ( pin_num == 1 )
-					pwm_control(143);
-				else if ( pin_num == 2 )
-					pwm_control(160);
-				else if ( pin_num == 3 )
-					pwm_control(195);
+				pwm_control( 90 + (20 * pin_num) );
 				
 				piLock(PMP_KEY);
 				printf("Locking pump\n");
