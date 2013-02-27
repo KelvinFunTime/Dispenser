@@ -7,7 +7,6 @@
 extern "C"
 {
 #include "../source/HardwareControl.h"
-#include "../source/defs.h"
 #include <wiringPi.h>
 }
 
@@ -34,7 +33,7 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        piLock(DAT_KEY);
+        piLock(
 
     }
     return 0;

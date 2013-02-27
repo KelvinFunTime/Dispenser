@@ -35,8 +35,6 @@ void * enterControl( void * args)
 		piLock(DAT_KEY);
 		set_drink_size(args->size);
 		set_pump_sel(args->pump_num);
-		piUnlock(DAT_KEY);
-		piUnlock(PMP_KEY);
 
 		usleep(500);
 	}
