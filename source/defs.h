@@ -36,6 +36,10 @@
 #define PUMP_PIN_1	7
 #define PUMP_PIN_2	5
 
+#define USER_PIN_1	8
+#define USER_PIN_2	9
+#define USER_PIN_3	14
+
 #define PWM_PIN		1
 
 //Pin modes available

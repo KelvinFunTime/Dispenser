@@ -7,6 +7,7 @@
 #include "HardwareControl.h"
 #include <pthread.h>
 #include "unistd.h"
+#include "UserButtons.h"
 
 typedef struct soft_args soft_args;
 
@@ -16,6 +17,7 @@ void * enterControl( void * args)
 	initSystem();
 	initPumpPins();
 	initServo();
+	initUserButtons();
 	printf("Spinning up threads and preparing cup pins\n");
 	init_cup_service();
 	
