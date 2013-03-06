@@ -25,15 +25,13 @@ void * enterControl( void * args)
 	while(1) 
 	{
 		piLock(PMP_KEY);
-		while(get_cup_data);
-		cup_data = get_cup_data();
+		while ( cup_data = get_cup_data() );
 		if ( cup_data & 0b001 )
-			args->cup = 1;
+		    args->cup = 1;
 		else if ( cup_data & 0b010 )
-			args->cup = 2;
+		    args->cup = 2;
 		else if ( cup_data & 0b100 )
-			args->cup = 3;
-
+		    args->cup = 3;
 		piLock(DAT_KEY);
 		set_drink_size(args->size);
 		set_pump_sel(args->pump_num);

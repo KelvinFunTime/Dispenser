@@ -24,7 +24,6 @@ int PumpSelect (void)
 int PumpControl (int pump_select, int time_interval)
 {
 	int success = 0;									// returns 1 if either pump successfully turns on
-	int i = 0;
 
 	switch (pump_select)
 	{													// pump 1 is PiGPIO pin 4 (16 on board)
