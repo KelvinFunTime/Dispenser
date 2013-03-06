@@ -7,6 +7,7 @@
 #include "debounce.h"
 #include "ServoControl.h"
 #include "unistd.h"
+#include "UserButtons.h"
 
 /***************************************************************
 *Name: 
@@ -61,7 +62,9 @@ void * service_thread(void * ptr_args)
 				
 				piLock(PMP_KEY);
 				printf("Locking pump\n");
-				//PumpControl( args->pump_sel, args->drink_size );
+				int size = getDrinkSize();
+				args->drink_size = size;
+				PumpControl( args->pump_sel, args->drink_size );
 				piUnlock(PMP_KEY);
 				printf("Unlocking pump\n");
 				
