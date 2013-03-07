@@ -1,3 +1,0 @@
-extern initUserButtons();
-extern getDrinkSize();
-

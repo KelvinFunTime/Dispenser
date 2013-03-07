@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     ../source/PortIO_Thread.c \
     ../source/HardwareControl.c \
     ../source/debounce.c \
-    ../source/CupSenseT.c
+    ../source/CupSenseT.c \
+    UserButtons.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -45,4 +46,5 @@ HEADERS += \
     ../source/HardwareControl.h \
     ../source/defs.h \
     ../source/debounce.h \
-    ../source/CupSenseT.h
+    ../source/CupSenseT.h \
+    UserButtons.h

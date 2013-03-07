@@ -13,6 +13,6 @@ void pwm_control(short pos)
 	sprintf(pwm_str, "gpio pwm 1 %d", pos);
 	printf("gpio pwm 1 %d\n", pos);
 	system(pwm_str);
-	sleep(1);
+    usleep(1500000);
 	system("gpio pwm 1 0");
 }
