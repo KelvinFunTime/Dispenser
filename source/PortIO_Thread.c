@@ -7,7 +7,6 @@
 #include "debounce.h"
 #include "ServoControl.h"
 #include "unistd.h"
-#include "UserButtons.h"
 
 /***************************************************************
 *Name: 
@@ -53,23 +52,23 @@ void * service_thread(void * ptr_args)
 				printf("Cu‎p %d pin has been detected\n", pin_num);
 				
 				//Servo control
-				if ( pin_num == 1 )
-					pwm_control(143);
-				else if ( pin_num == 2 )
-					pwm_control(160);
-				else if ( pin_num == 3 )
-					pwm_control(195);
+                if ( pin_num == CUP_PIN_1 )
+                    pwm_control(136);
+                else if ( pin_num == CUP_PIN_2 )
+                    pwm_control(154);
+                else if ( pin_num == CUP_PIN_3 )
+                    pwm_control(173);
 				
 				piLock(PMP_KEY);
-				printf("Locking pump\n");
-				int size = getDrinkSize();
-				args->drink_size = size;
+                printf("Locking pump\n");
 				PumpControl( args->pump_sel, args->drink_size );
 				piUnlock(PMP_KEY);
 				printf("Unlocking pump\n");
 				
 				piUnlock(CUP_KEY);
 				sleep(2);//sleep thread for two seconds
+                while ( debounce(pin_num, deb_length, LOW) )
+                    usleep(50000);
 			}
 		}
 		//Nothing new was found or has already been found

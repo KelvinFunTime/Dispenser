@@ -11,30 +11,36 @@
 
 typedef struct soft_args soft_args;
 
-void * enterControl( void * args)
+void * enterControl( void * s_args)
 {
+    soft_args * args = (soft_args *)(s_args);
 	short cup_data = 0;
 	initSystem();
 	initPumpPins();
-	initServo();
-	initUserButtons();
+    initServo();
 	printf("Spinning up threads and preparing cup pins\n");
 	init_cup_service();
 	
 	printf("Entering service loop\n");
+
 	while(1) 
 	{
 		piLock(PMP_KEY);
-		while ( cup_data = get_cup_data() );
-		if ( cup_data & 0b001 )
+
+        while ( cup_data = get_cup_data() == 0 )
+            usleep(500);
+        printf("HardwareControl found cup %d\n", cup_data);
+
+        if ( cup_data == CUP_PIN_1 )
 		    args->cup = 1;
-		else if ( cup_data & 0b010 )
+        else if ( cup_data == CUP_PIN_2 )
 		    args->cup = 2;
-		else if ( cup_data & 0b100 )
+        else if ( cup_data == CUP_PIN_3 )
 		    args->cup = 3;
 		piLock(DAT_KEY);
 		set_drink_size(args->size);
 		set_pump_sel(args->pump_num);
+        set_cup_data(0);
 		piUnlock(DAT_KEY);
 		piUnlock(PMP_KEY);
 
