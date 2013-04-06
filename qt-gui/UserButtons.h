@@ -1,10 +1,10 @@
 #ifndef USER_BUTTS_H
 #define USER_BUTTS_H
 
-//#include <QLabel>
+#include "../source/HardwareControl.h"
 
 void initUserButtons();
-int getDrinkSize();
-int getPump();
+void getDrinkSize(soft_args *);
+void getPump(soft_args *);
 
 #endif

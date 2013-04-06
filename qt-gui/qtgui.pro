@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     ../source/HardwareControl.c \
     ../source/debounce.c \
     ../source/CupSenseT.c \
-    UserButtons.cpp
+    UserButtons.cpp \
+    Timer.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -47,4 +48,5 @@ HEADERS += \
     ../source/defs.h \
     ../source/debounce.h \
     ../source/CupSenseT.h \
-    UserButtons.h
+    UserButtons.h \
+    Timer.h

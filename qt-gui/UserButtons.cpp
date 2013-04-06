@@ -2,8 +2,6 @@
 #include <wiringPi.h>
 #include "UserButtons.h"
 #include <iostream>
-//#include <QLabel>
-//#include <QString>
 
 using std::cout;
 using std::endl;
@@ -19,24 +17,21 @@ void initUserButtons()
 	pullUpDnControl(USER_PIN_3, PUD_UP);
 }
 
-int getDrinkSize()
+void getDrinkSize(soft_args * args)
 {
 	int done = 0;
-	int oz = 12;
+    args->size = 12;
 
-    //QString output;
-
-    cout << "Got to drink size" << endl;
-
-    cout << "\nOz: " << oz << endl;
+    cout << "\nOz: " << args->size << endl;
 
 	while(!done)
 	{
+        usleep(500);
 		if(digitalRead(USER_PIN_1) == 0)
 		{	
-			if(oz < 36)
-				oz += 1;
-            cout << "Oz: " << oz << endl;
+            if(args->size < 36)
+                args->size += 1;
+            cout << "Oz: " << args->size << endl;
 			while(digitalRead(USER_PIN_1) == 0);
 		}
 		else if(digitalRead(USER_PIN_2) == 0)
@@ -47,32 +42,28 @@ int getDrinkSize()
 		}
 		else if(digitalRead(USER_PIN_3) == 0)
 		{
-			if(oz > 1)
-				oz -= 1;
-            cout << "Oz: " << oz << endl;
+            if(args->size > 1)
+                args->size -= 1;
+            cout << "Oz: " << args->size << endl;
 			while(digitalRead(USER_PIN_3) == 0);
 		}
 	}
-	
-	return oz;
 }
 
-int getPump()
+void getPump(soft_args * args)
 {
-    int pump = 0;
-
-    while ( !pump )
+    while ( !args->pump_num )
         if(digitalRead(USER_PIN_1) == 0)
         {
-            pump = 2;
+            args->pump_num = 2;
             while ( digitalRead(USER_PIN_1) == 0 );
         }
         else if(digitalRead(USER_PIN_3) == 0)
         {
-            pump = 1;
+            args->pump_num = 1;
             while ( digitalRead(USER_PIN_3) == 0 );
         }
-
-    return pump;
+        else
+            usleep(500);
 }
 
