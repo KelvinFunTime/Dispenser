@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     main_window.setFixedHeight(360);
     main_window.setFixedWidth(480);
-
+    main_window.move(QApplication::desktop()->screen()->rect().center() - main_window.rect().center());
     main_window.show();
 
     cout << "Starting app" << endl;
