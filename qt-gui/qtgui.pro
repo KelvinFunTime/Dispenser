@@ -30,7 +30,6 @@ SOURCES += main.cpp \
     ../source/ServoControl.c \
     ../source/PumpControllingSystem.c \
     ../source/PortIO_Thread.c \
-    ../source/HardwareControl.c \
     ../source/debounce.c \
     ../source/CupSenseT.c \
     UserButtons.cpp \

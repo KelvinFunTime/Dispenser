@@ -4,6 +4,8 @@
 *
 *
 ****************************************************************/
+#ifndef DEFS_H
+#define DEFS_H
 
 //Calculated debounce for button and cup
 #define USER_PRESS_DEBOUNCE_LENGTH	437500	// needs to be in seconds!
@@ -65,3 +67,13 @@
 //Pin PWM modes
 #define	PWM_MODE_MS	0
 #define	PWM_MODE_BAL	1
+
+//Data structure used for passing information between threads
+typedef struct soft_args
+{
+    short pump_num;
+    short size;
+    short cup;
+} soft_args;
+
+#endif //DEFS_H
