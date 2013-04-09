@@ -32,7 +32,7 @@ int PumpControl (int pump_select, int time_interval)
 			printf ("\nDispensing to Pump 1.....");
 			digitalWrite (PUMP_PIN_1, 1);		    // pump 1 is enabled and on
 
-            usleep(time_interval * 1000000 + 1000000);
+            usleep(time_interval * 1000000 + 1500000);
 
 			digitalWrite (PUMP_PIN_1, 0);				// turn the pump off
 			success = 1;								// successful pump sequence
@@ -44,7 +44,7 @@ int PumpControl (int pump_select, int time_interval)
 			digitalWrite (PUMP_PIN_2, 1);				// pump 2 is enabled and on
 			printf ("\nDispensing to Pump 2....");
 
-            usleep(time_interval * 1000000 + 1000000);
+            usleep(time_interval * 1000000 + 1500000);
 
 			digitalWrite (PUMP_PIN_2, 0);				// turn the pump off
 			success = 1;								// successful pump sequence
@@ -59,7 +59,7 @@ int PumpControl (int pump_select, int time_interval)
 			digitalWrite (PUMP_PIN_2, 1);						// pump 2 is enabled and on
 			printf ("\nDispensing to Pump 1 and Pump 2....");
 
-            usleep(time_interval * 500000 + 1000000);
+            usleep(time_interval * 500000 + 1500000);
 
 			digitalWrite (PUMP_PIN_1, 0);					// turn pump 1 off
 			digitalWrite (PUMP_PIN_2, 0);					// turn pump 2 off

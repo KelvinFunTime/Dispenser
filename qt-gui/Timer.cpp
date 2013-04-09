@@ -10,15 +10,22 @@ Timer_Label::Timer_Label( QLabel * label, soft_args * args ) {
 }
 
 void Timer_Label::update_label() {
+    static short prev_cup = 0;
+    QString output = QString("Cup ") + QString::number( m_args->cup ) + QString(" selected\n");
     if ( m_args->cup && m_args->size != 0 )
-    {
-        QString output = QString("Cup ") + QString::number( m_args->cup ) + QString(" selected\n") +
-            QString("Number of Oz: ") + QString::number( m_args->size );
-        m_label->setText(output);
+    { 
+        prev_cup = m_args->cup;
+        m_label->setText(output + QString("Number of Oz: ") + QString::number( m_args->size ) );
     }
-    else if ( m_args->cup == 0 && m_args->cup != 0)
+    else if ( m_args->pump_num )
     {
-        m_label->setText( QString("Pump selected: ") + QString::number( m_args->pump_num ) );
+        output = QString("Cup ") + QString::number( prev_cup ) + QString(" selected\n");
+        m_label->setText( output + QString("Dispensing drink!") );
+    }
+    else if ( m_args->cup == 0 && m_args->size != 0)
+    {
+        output = QString("Cup ") + QString::number( prev_cup ) + QString(" selected\n");
+        m_label->setText( output + QString("Select Pump 1 or 2") );
     }
     else
         m_label->setText( QString("No cup detected") );
@@ -38,7 +45,8 @@ Timer_Level::Timer_Level() {
 }
 
 void Timer_Level::update_level() {
-    system("python piClient.py 1 Danger");
+    system("python piClient.py 1 Full");
+    system("python piClient.py 2 Half");
 }
 
 Timer_Level::~Timer_Level()

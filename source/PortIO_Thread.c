@@ -28,7 +28,7 @@ void * service_thread(void * ptr_args)
 	piLock(CUP_KEY);
 	short pin_num = args->pin_num;
 	short deb_length = args->deb_length;
-	short temp = 0;
+    short temp = 0;
 	//Creates a binary 001, 010, or 100, based on pin number
 	short pin_to_data = 1 << (pin_num / 3);
 	piUnlock(CUP_KEY);
@@ -48,21 +48,22 @@ void * service_thread(void * ptr_args)
 			{
 				piLock(CUP_KEY);
 				//Assert pin for read from managing thread
-				temp = args->data = args->data | pin_to_data;
+                temp = ( args->data = args->data | pin_to_data );
 				
-				printf("Cu‎p %d pin has been detected\n", pin_num);
+                printf("Cu‎p %d pin has been detected\n", pin_num);
 				
 				//Servo control
                 if ( pin_num == CUP_PIN_1 )
-                    pwm_control(136);
+                    pwm_control(119);
                 else if ( pin_num == CUP_PIN_2 )
-                    pwm_control(154);
+                    pwm_control(103);
                 else if ( pin_num == CUP_PIN_3 )
-                    pwm_control(173);
+                    pwm_control(84);
 				
 				piLock(PMP_KEY);
                 printf("Locking pump\n");
 				PumpControl( args->pump_sel, args->drink_size );
+                sleep(2);
 				piUnlock(PMP_KEY);
 				printf("Unlocking pump\n");
 				

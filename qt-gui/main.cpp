@@ -24,6 +24,7 @@ void * hwControl( void * );
 void * enterControl(void *);
 void initSystem(void);
 void initServo(void);
+short seperateService( short data );
 
 soft_args pmp_args;
 
@@ -86,6 +87,7 @@ void * hwControl( void * )
     initPumpPins();
     initServo();
 
+
     pthread_create( &cont_t, NULL, enterControl, (void *)(&pmp_args) );
 
     usleep(5000);
@@ -106,8 +108,9 @@ void * hwControl( void * )
         piUnlock(DAT_KEY);
         cout << "Dispensing drink" << endl;
         sleep(5);
+        pmp_args.pump_num = 0;
+        pmp_args.size = 0;
         cout << "No cup detected" << endl;
-
     }
     return 0;
 }
@@ -125,14 +128,16 @@ void * enterControl( void * s_args)
     {
         piLock(PMP_KEY);
 
-        while ( cup_data = get_cup_data() == 0 )
+        while ( ( cup_data = get_cup_data() ) == 0 )
             usleep(500);
 
-        if ( cup_data == CUP_PIN_1 )
+        cup_data = seperateService(cup_data);
+
+        if ( cup_data == DATA_1 )
             args->cup = 1;
-        else if ( cup_data == CUP_PIN_2 )
+        else if ( cup_data == DATA_2 )
             args->cup = 2;
-        else if ( cup_data == CUP_PIN_3 )
+        else if ( cup_data == DATA_3 )
             args->cup = 3;
         printf("HardwareControl found cup %d\n", args->cup);
         piLock(DAT_KEY);
@@ -173,5 +178,18 @@ void initServo(void)
     usleep(500);
     system("gpio pwmc 200");
     usleep(500);
+    system("gpio pwm 1 103");
+    usleep(1500000);
     system("gpio pwm 1 0");
+}
+
+short seperateService( short data )
+{
+    if ( data & 0b001 )
+        data = 0b001;
+    else if ( data & 0b010 )
+        data = 0b010;
+    else if ( data & 0b100 )
+        data = 0b100;
+    return data;
 }

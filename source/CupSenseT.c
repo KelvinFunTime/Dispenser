@@ -85,6 +85,5 @@ void set_pump_sel( short pump_sel )
 
 short get_cup_data()
 {
-	short temp = cup_args.data;
-	return temp;
+    return cup_args.data;
 }
