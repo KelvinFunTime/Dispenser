@@ -27,25 +27,24 @@ LIBS += -lpthread -lwiringPi -L/usr/lib
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    ../source/ServoControl.c \
-    ../source/PumpControllingSystem.c \
-    ../source/PortIO_Thread.c \
-    ../source/debounce.c \
-    ../source/CupSenseT.c \
     UserButtons.cpp \
-    Timer.cpp
+    ServoControl.cpp \
+    TimerLabel.cpp \
+    TimerLevel.cpp \
+    PumpControl.cpp \
+    Debounce.cpp \
+    CupButtons.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    ../source/ServoControl.h \
-    ../source/PumpControllingSystem.h \
-    ../source/PortIO_Thread.h \
-    ../source/HardwareControl.h \
-    ../source/defs.h \
-    ../source/debounce.h \
-    ../source/CupSenseT.h \
     UserButtons.h \
-    Timer.h
+    TimerLevel.h \
+    ServoControl.h \
+    TimerLabel.h \
+    PumpControl.h \
+    Defs.h \
+    Debounce.h \
+    CupButtons.h

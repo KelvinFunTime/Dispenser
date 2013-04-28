@@ -1,35 +1,33 @@
 #include <QtGui/QApplication>
-#include "qmlapplicationviewer.h"
-#include <iostream>
-#include <pthread.h>
-#include "UserButtons.h"
-#include <QTimer>
-#include "Timer.h"
 #include <QWidget>
 #include <QtGui>
-
-extern "C"
-{
-#include "../source/CupSenseT.h"
-#include "../source/defs.h"
-#include "../source/PortIO_Thread.h"
-#include "../source/PumpControllingSystem.h"
+#include <QTimer>
+#include <iostream>
+#include <pthread.h>
 #include <wiringPi.h>
-}
+
+#include "qmlapplicationviewer.h"
+#include "UserButtons.h"
+#include "CupButtons.h"
+#include "TimerLevel.h"
+#include "TimerLabel.h"
+#include "PumpControl.h"
 
 using std::cout;
 using std::endl;
 
 void * hwControl( void * );
-void * enterControl(void *);
-void initSystem(void);
-void initServo(void);
+void InitSystem(void);
+void InitServo(void);
 short seperateService( short data );
 
 soft_args pmp_args;
+short state;
 
 int main(int argc, char *argv[])
 {
+    InitSystem();
+
     cout << "Building application" << endl;
 
     QApplication app(argc, argv);
@@ -37,6 +35,13 @@ int main(int argc, char *argv[])
     cout << "Building main_window" << endl;
 
     QWidget main_window;
+
+    cout << "Showing main_window" << endl;
+
+    main_window.setFixedHeight(360);
+    main_window.setFixedWidth(480);
+    main_window.move(QApplication::desktop()->screen()->rect().center() - main_window.rect().center());
+    main_window.show();
 
     cout << "Building label for mw" << endl;
 
@@ -49,6 +54,7 @@ int main(int argc, char *argv[])
     cout << "Building QVBox" << endl;
 
     QVBoxLayout * vbl = new QVBoxLayout( &main_window );
+    vbl->addWidget( mw_label, 0, Qt::Alignment());
 
     cout << "Spinning up hwControl" << endl;
 
@@ -59,19 +65,10 @@ int main(int argc, char *argv[])
 
     pthread_create( &hw_t, NULL, hwControl, NULL);
 
-    vbl->addWidget(mw_label,0,Qt::Alignment());
-
     cout << "Starting Timer" << endl;
 
-    Timer_Label timer_label(mw_label, &pmp_args);
-    Timer_Level timer_level;
-
-    cout << "Showing main_window" << endl;
-
-    main_window.setFixedHeight(360);
-    main_window.setFixedWidth(480);
-    main_window.move(QApplication::desktop()->screen()->rect().center() - main_window.rect().center());
-    main_window.show();
+    TimerLabel timerLabel(mw_label, &state);
+    TimerLevel timerLevel;
 
     cout << "Starting app" << endl;
 
@@ -80,15 +77,12 @@ int main(int argc, char *argv[])
 
 void * hwControl( void * )
 {
-    pthread_t cont_t;
-
-    initSystem();
-    initUserButtons();
-    initPumpPins();
-    initServo();
-
-
-    pthread_create( &cont_t, NULL, enterControl, (void *)(&pmp_args) );
+    InitSystem();
+    InitUserButtons();
+    InitPumpPins();
+    InitServo();
+    short cup_data;
+    CupButtons cb;
 
     usleep(5000);
 
@@ -96,62 +90,40 @@ void * hwControl( void * )
 
     while (1)
     {
-        piLock(DAT_KEY);
         pmp_args.pump_num = 0;
         pmp_args.size = 0;
-        while ( pmp_args.cup == 0)
+		
+		//Prepare data for pump
+		piLock(PMP_KEY);
+        while ( !( cup_data = cb.GetButtons() ) )
             usleep(500);
-        getDrinkSize(&pmp_args);
-        pmp_args.cup = 0;
-        cout << "Select Drink (1 or 2)" << endl;
-        getPump(&pmp_args);
-        piUnlock(DAT_KEY);
-        cout << "Dispensing drink" << endl;
-        sleep(5);
-        pmp_args.pump_num = 0;
-        pmp_args.size = 0;
-        cout << "No cup detected" << endl;
-    }
-    return 0;
-}
-
-void * enterControl( void * s_args)
-{
-    soft_args * args = (soft_args *)(s_args);
-    short cup_data = 0;
-    printf("Spinning up threads and preparing cup pins\n");
-    init_cup_service();
-
-    printf("Entering service loop\n");
-
-    while(1)
-    {
-        piLock(PMP_KEY);
-
-        while ( ( cup_data = get_cup_data() ) == 0 )
-            usleep(500);
-
-        cup_data = seperateService(cup_data);
-
-        if ( cup_data == DATA_1 )
-            args->cup = 1;
+		cup_data = seperateService(cup_data);
+		
+		if ( cup_data == DATA_1 )
+            state = SELECT_SIZE + ( (pmp_args.cup = 1) << 4);
         else if ( cup_data == DATA_2 )
-            args->cup = 2;
+            state = SELECT_SIZE + ( (pmp_args.cup = 2) << 4);
         else if ( cup_data == DATA_3 )
-            args->cup = 3;
-        printf("HardwareControl found cup %d\n", args->cup);
-        piLock(DAT_KEY);
-        set_drink_size(args->size);
-        set_pump_sel(args->pump_num);
-        set_cup_data(0);
-        piUnlock(DAT_KEY);
-        piUnlock(PMP_KEY);
+            state = SELECT_SIZE + ( (pmp_args.cup = 3) << 4);
+		
+        getDrinkSize( state );
+        cb.SetDrinkSize( pmp_args.size );
+        state = SELECT_DRINK;
 
-        usleep(500);
+		getPump(&pmp_args);
+		cb.SetPumpSelect( pmp_args.pump_num );
+        state = DONE;
+
+        cb.ClearButton( cup_data );
+        pmp_args.cup = 0;
+		
+		piUnlock(PMP_KEY);
+        sleep(5);
     }
+    return NULL;
 }
 
-void initSystem(void)
+void InitSystem(void)
 {
     printf("Checking wiringPi setup\n");
     int setupCheck = wiringPiSetup();	// WiringPi init
@@ -170,7 +142,7 @@ void initSystem(void)
     printf("Set up finished\n");
 }
 
-void initServo(void)
+void InitServo(void)
 {
     system("gpio mode 1 pwm");
     usleep(500);

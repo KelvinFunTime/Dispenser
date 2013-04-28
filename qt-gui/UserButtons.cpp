@@ -1,4 +1,4 @@
-#include "../source/defs.h"
+#include "Defs.h"
 #include <wiringPi.h>
 #include "UserButtons.h"
 #include <iostream>
@@ -6,7 +6,7 @@
 using std::cout;
 using std::endl;
 
-void initUserButtons()
+void InitUserButtons()
 {
 	pinMode(USER_PIN_1, INPUT);
 	pinMode(USER_PIN_2, INPUT);
@@ -17,21 +17,21 @@ void initUserButtons()
 	pullUpDnControl(USER_PIN_3, PUD_UP);
 }
 
-void getDrinkSize(soft_args * args)
+void getDrinkSize( short & size )
 {
 	int done = 0;
-    args->size = 12;
+    size = 12 << 4;
 
-    cout << "\nOz: " << args->size << endl;
+    cout << "\nOz: " << ( size >> 4 ) << endl;
 
 	while(!done)
 	{
         usleep(500);
 		if(digitalRead(USER_PIN_1) == 0)
 		{	
-            if(args->size < 36)
-                args->size += 1;
-            cout << "Oz: " << args->size << endl;
+            if( size < 36 << 4 )
+                size += 1 << 4;
+            cout << "Oz: " << ( size >> 4 ) << endl;
 			while(digitalRead(USER_PIN_1) == 0);
 		}
 		else if(digitalRead(USER_PIN_2) == 0)
@@ -42,9 +42,9 @@ void getDrinkSize(soft_args * args)
 		}
 		else if(digitalRead(USER_PIN_3) == 0)
 		{
-            if(args->size > 1)
-                args->size -= 1;
-            cout << "Oz: " << args->size << endl;
+            if( size > 1 << 4 )
+                size -= 1 << 4;
+            cout << "Oz: " << ( size >> 4 ) << endl;
 			while(digitalRead(USER_PIN_3) == 0);
 		}
 	}
