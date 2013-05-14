@@ -14,9 +14,13 @@ extern "C"
 CupButtons::CupButtons()
 {
 	//Set the thread handles to null
-    m_cup_1 = 0;
-    m_cup_2 = 0;
-    m_cup_3 = 0;
+    m_cup_t1 = 0;
+    m_cup_t2 = 0;
+    m_cup_t3 = 0;
+
+    m_cup1 = 0;
+    m_cup2 = 0;
+    m_cup3 = 0;
 	
 	//Init Pump Pins
     InitPumpPins();
@@ -32,19 +36,19 @@ CupButtons::CupButtons()
     pullUpDnControl(CUP_PIN_3, PUD_UP);
 
 	//Start worker threads through a static function call
-	pthread_create( &m_cup_3, NULL, ThreadWrapper, (void *)(this) );
+    pthread_create( &m_cup_t3, NULL, ThreadWrapper, (void *)(this) );
 	usleep(50);
-	pthread_create( &m_cup_2, NULL, ThreadWrapper, (void *)(this) );
+    pthread_create( &m_cup_t2, NULL, ThreadWrapper, (void *)(this) );
 	usleep(50);
-	pthread_create( &m_cup_1, NULL, ThreadWrapper, (void *)(this) );
+    pthread_create( &m_cup_t1, NULL, ThreadWrapper, (void *)(this) );
 	usleep(50);
 }
 
 short CupButtons::GetButtons()
 {
-    short temp = ( m_cup_1 << 0 )
-               + ( m_cup_2 << 1 )
-               + ( m_cup_3 << 2 );
+    short temp = ( m_cup1 )
+               + ( m_cup2 << 1 )
+               + ( m_cup3 << 2 );
 	
 	return temp;
 }
@@ -62,21 +66,21 @@ void CupButtons::SetPumpSelect( short pump )
 void CupButtons::ClearButton( short button )
 {
 	if ( button & 0b0001 )
-		m_cup_1 = 0;
+        m_cup1 = 0;
 	else if ( button & 0b0010 )
-		m_cup_2 = 0;
+        m_cup2 = 0;
 	else if ( button & 0b0100 )
-		m_cup_3 = 0;
+        m_cup3 = 0;
 }
 
 void * CupButtons::ThreadWrapper( void * o )
 {
     CupButtons * t = (CupButtons *)(o);
-    if ( t->m_cup_1 )
+    if ( t->m_cup_t1 )
         t->CupThread( CUP_PIN_1 );
-    else if ( t->m_cup_2 )
+    else if ( t->m_cup_t2 )
         t->CupThread( CUP_PIN_2 );
-    else if ( t->m_cup_3 )
+    else if ( t->m_cup_t3 )
         t->CupThread( CUP_PIN_3 );
 }
 
@@ -104,15 +108,15 @@ void CupButtons::CupThread( int arg )
 				switch (pin_num)
 				{
 				case CUP_PIN_1:
-					m_cup1 = true;
+                    m_cup1 = 1;
 					PWMControl(119);
 					break;
 				case CUP_PIN_2:
-					m_cup2 = true;
+                    m_cup2 = 1;
 					PWMControl(103);
 					break;
 				case CUP_PIN_3:
-					m_cup3 = true;
+                    m_cup3 = 1;
 					PWMControl(84);
 					break;
 				}

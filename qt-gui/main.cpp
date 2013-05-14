@@ -11,6 +11,7 @@
 #include "CupButtons.h"
 #include "TimerLevel.h"
 #include "TimerLabel.h"
+#include "TimerHalt.h"
 #include "PumpControl.h"
 
 using std::cout;
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
 
     TimerLabel timerLabel(mw_label, &state);
     TimerLevel timerLevel;
+    TimerHalt  timerHalt;
 
     cout << "Starting app" << endl;
 
@@ -100,23 +102,24 @@ void * hwControl( void * )
 		cup_data = seperateService(cup_data);
 		
 		if ( cup_data == DATA_1 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 1) << 4);
+            state = SELECT_SIZE + ( (pmp_args.cup = 1) << 4 );
         else if ( cup_data == DATA_2 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 2) << 4);
+            state = SELECT_SIZE + ( (pmp_args.cup = 2) << 4 );
         else if ( cup_data == DATA_3 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 3) << 4);
+            state = SELECT_SIZE + ( (pmp_args.cup = 3) << 4 );
 		
         getDrinkSize( state );
         cb.SetDrinkSize( pmp_args.size );
-        state = SELECT_DRINK;
 
+        state = SELECT_DRINK;
 		getPump(&pmp_args);
 		cb.SetPumpSelect( pmp_args.pump_num );
         state = DONE;
 
         cb.ClearButton( cup_data );
         pmp_args.cup = 0;
-		
+        state = IDLE;
+
 		piUnlock(PMP_KEY);
         sleep(5);
     }

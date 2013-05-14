@@ -11,10 +11,12 @@ void InitUserButtons()
 	pinMode(USER_PIN_1, INPUT);
 	pinMode(USER_PIN_2, INPUT);
 	pinMode(USER_PIN_3, INPUT);
+	pinMode(MURDER_PIN, INPUT);
 	
 	pullUpDnControl(USER_PIN_1, PUD_UP);
 	pullUpDnControl(USER_PIN_2, PUD_UP);
 	pullUpDnControl(USER_PIN_3, PUD_UP);
+	pullUpDnControl(MURDER_PIN, PUD_UP);
 }
 
 void getDrinkSize( short & size )

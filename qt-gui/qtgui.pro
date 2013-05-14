@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     TimerLevel.cpp \
     PumpControl.cpp \
     Debounce.cpp \
-    CupButtons.cpp
+    CupButtons.cpp \
+    TimerHalt.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -47,4 +48,5 @@ HEADERS += \
     PumpControl.h \
     Defs.h \
     Debounce.h \
-    CupButtons.h
+    CupButtons.h \
+    TimerHalt.h

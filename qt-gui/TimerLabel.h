@@ -26,7 +26,7 @@ private:
     short * m_state;
     QLabel * m_label;
 public slots:
-    void update_label();
+    void UpdateLevel();
 };
 
 #endif // TIMER_H

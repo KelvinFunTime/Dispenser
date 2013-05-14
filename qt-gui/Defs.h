@@ -44,6 +44,8 @@
 
 #define PWM_PIN		1
 
+#define MURDER_PIN	4
+
 //Pin modes available
 #define	WPI_MODE_PINS		 0
 #define	WPI_MODE_GPIO		 1
@@ -73,6 +75,18 @@
 #define SELECT_SIZE     0x1
 #define SELECT_DRINK    0x2
 #define DONE            0x3
+
+//Tank volumes coming out of SPI
+//Tank 1
+#define TANK1_EMPTY 0x1DB
+#define TANK1_QUART 0x33F
+#define TANK1_HALF  0x37B
+#define TANK1_FULL  0x3C2
+//Tank 2
+#define TANK2_EMPTY 0x1EF
+#define TANK2_QUART 0x301
+#define TANK2_HALF  0x32E
+#define TANK2_FULL  0x36C
 
 //Data structure used for passing information between threads
 typedef struct soft_args

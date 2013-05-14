@@ -13,9 +13,9 @@
 class CupButtons
 {
 private:
-	pthread_t m_cup_1;
-	pthread_t m_cup_2;
-	pthread_t m_cup_3;
+    pthread_t m_cup_t1;
+    pthread_t m_cup_t2;
+    pthread_t m_cup_t3;
 	
 	bool  m_cup1;
 	bool  m_cup2;

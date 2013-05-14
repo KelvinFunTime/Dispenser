@@ -1,15 +1,15 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'TimerLabel.h'
+** Meta object code from reading C++ file 'TimerHalt.h'
 **
-** Created: Fri May 10 20:07:52 2013
+** Created: Fri May 10 20:08:10 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../qt-gui/TimerLabel.h"
+#include "../qt-gui/TimerHalt.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'TimerLabel.h' doesn't include <QObject>."
+#error "The header file 'TimerHalt.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 63
 #error "This file was generated using the moc from 4.8.2. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_TimerLabel[] = {
+static const uint qt_meta_data_TimerHalt[] = {
 
  // content:
        6,       // revision
@@ -31,55 +31,55 @@ static const uint qt_meta_data_TimerLabel[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      11,   25,   25,   25, 0x0a,
+      10,   24,   24,   24, 0x0a,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_TimerLabel[] = {
-    "TimerLabel\0UpdateLevel()\0\0"
+static const char qt_meta_stringdata_TimerHalt[] = {
+    "TimerHalt\0CheckButton()\0\0"
 };
 
-void TimerLabel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void TimerHalt::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         Q_ASSERT(staticMetaObject.cast(_o));
-        TimerLabel *_t = static_cast<TimerLabel *>(_o);
+        TimerHalt *_t = static_cast<TimerHalt *>(_o);
         switch (_id) {
-        case 0: _t->UpdateLevel(); break;
+        case 0: _t->CheckButton(); break;
         default: ;
         }
     }
     Q_UNUSED(_a);
 }
 
-const QMetaObjectExtraData TimerLabel::staticMetaObjectExtraData = {
+const QMetaObjectExtraData TimerHalt::staticMetaObjectExtraData = {
     0,  qt_static_metacall 
 };
 
-const QMetaObject TimerLabel::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_TimerLabel,
-      qt_meta_data_TimerLabel, &staticMetaObjectExtraData }
+const QMetaObject TimerHalt::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_TimerHalt,
+      qt_meta_data_TimerHalt, &staticMetaObjectExtraData }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &TimerLabel::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &TimerHalt::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *TimerLabel::metaObject() const
+const QMetaObject *TimerHalt::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *TimerLabel::qt_metacast(const char *_clname)
+void *TimerHalt::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_TimerLabel))
-        return static_cast<void*>(const_cast< TimerLabel*>(this));
+    if (!strcmp(_clname, qt_meta_stringdata_TimerHalt))
+        return static_cast<void*>(const_cast< TimerHalt*>(this));
     return QObject::qt_metacast(_clname);
 }
 
-int TimerLabel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int TimerHalt::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)

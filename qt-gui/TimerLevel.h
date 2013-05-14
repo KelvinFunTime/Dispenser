@@ -13,6 +13,8 @@
 #include <QTimer>
 #include <QLabel>
 
+#include "Defs.h"
+
 class TimerLevel: public QObject {
     Q_OBJECT
 public:
