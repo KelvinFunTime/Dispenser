@@ -8,7 +8,10 @@
 #ifndef SERVOCONTROL_H
 #define SERVOCONTROL_H
 
+extern "C"
+{
 #include <wiringPi.h>
+}
 
 void PWMControl( short pos );
 

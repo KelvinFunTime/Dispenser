@@ -25,6 +25,7 @@ private:
     QTimer * m_timer;
     short * m_state;
     QLabel * m_label;
+    short m_cup;
 public slots:
     void UpdateLevel();
 };

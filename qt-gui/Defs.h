@@ -74,7 +74,8 @@
 #define IDLE            0x0
 #define SELECT_SIZE     0x1
 #define SELECT_DRINK    0x2
-#define DONE            0x3
+#define DONE            0x4
+#define SELECT_CUP      0x8
 
 //Tank volumes coming out of SPI
 //Tank 1

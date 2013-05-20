@@ -1,4 +1,5 @@
 #include "TimerLevel.h"
+#include <wiringPi.h>
 
 TimerLevel::TimerLevel() {
     m_timer = new QTimer();
@@ -17,21 +18,15 @@ void TimerLevel::update_level()
     int cmd = 0;
     int input = 0;
 
-    char buffer[2] = {0};
-
-    if(wiringPiSetup() == -1)
-    {
-        printf("Ohhhhhhhhhhhhhh\n");
-    }
-
     pinMode(SPICLK, 1);
     pinMode(SPIMISO, 0);
     pinMode(SPIMOSI, 1);
+
+    char buffer[2] = {0};
     pinMode(SPICS, 1);
 
     while(1)
     {
-        printf("\nIn 1\n");
         input = 0;
         cmd = 0x18 << 3;
 
@@ -39,18 +34,14 @@ void TimerLevel::update_level()
         digitalWrite(SPICLK, 0);
         digitalWrite(SPICS, 0);
 
-        printf("Cmd sent: ");
-        //Send cmd
         for(i = 0; i < 5; ++i)
         {
             if(cmd & 0x80)
             {
-                printf("1");
                 digitalWrite(SPIMOSI, 1);
             }
             else
             {
-                printf("0");
                 digitalWrite(SPIMOSI, 0);
             }
 
@@ -59,8 +50,6 @@ void TimerLevel::update_level()
             digitalWrite(SPICLK, 1);
             digitalWrite(SPICLK, 0);
         }
-
-        printf("\n");
 
         //Read in
         for(i = 0; i < 12; ++i)
@@ -78,11 +67,17 @@ void TimerLevel::update_level()
 
         input = input >> 1;
 
-        printf("Output: %X\n", input);
+        if ( input >= TANK1_HALF )
+            system("python pyClient.py 1 FULL");
+        else if ( input >= TANK1_QUART )
+            system("python pyClient.py 1 HALF");
+        else if ( input >= TANK1_EMPTY )
+            system("python pyClient.py 1 QUART");
+        else
+            system("python pyClient.py 1 EMPTY");
 
         sleep(1);
 
-        printf("\nIn 2\n");
         input = 0;
         cmd = 0x1F << 3;
 
@@ -90,18 +85,15 @@ void TimerLevel::update_level()
         digitalWrite(SPICLK, 0);
         digitalWrite(SPICS, 0);
 
-        printf("Cmd sent: ");
         //Send cmd
         for(i = 0; i < 5; ++i)
         {
             if(cmd & 0x80)
             {
-                printf("1");
                 digitalWrite(SPIMOSI, 1);
             }
             else
             {
-                printf("0");
                 digitalWrite(SPIMOSI, 0);
             }
 
@@ -110,8 +102,6 @@ void TimerLevel::update_level()
             digitalWrite(SPICLK, 1);
             digitalWrite(SPICLK, 0);
         }
-
-        printf("\n");
 
         //Read in
         for(i = 0; i < 12; ++i)
@@ -129,12 +119,17 @@ void TimerLevel::update_level()
 
         input = input >> 1;
 
-        printf("Output: %X\n", input);
+        if ( input >= TANK2_HALF )
+            system("python pyClient.py 2 FULL");
+        else if ( input >= TANK2_QUART )
+            system("python pyClient.py 2 HALF");
+        else if ( input >= TANK2_EMPTY )
+            system("python pyClient.py 2 QUART");
+        else
+            system("python pyClient.py 2 EMPTY");
 
         sleep(1);
     }
-
-    return 0;
 }
 
 TimerLevel::~TimerLevel()

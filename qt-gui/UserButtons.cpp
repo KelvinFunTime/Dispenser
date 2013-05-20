@@ -22,7 +22,7 @@ void InitUserButtons()
 void getDrinkSize( short & size )
 {
 	int done = 0;
-    size = 12 << 4;
+    size = size + 12 << 4;
 
     cout << "\nOz: " << ( size >> 4 ) << endl;
 
@@ -31,8 +31,8 @@ void getDrinkSize( short & size )
         usleep(500);
 		if(digitalRead(USER_PIN_1) == 0)
 		{	
-            if( size < 36 << 4 )
-                size += 1 << 4;
+            if( ( size >> 4 ) > 36)
+                size += ( 1 << 4 );
             cout << "Oz: " << ( size >> 4 ) << endl;
 			while(digitalRead(USER_PIN_1) == 0);
 		}
@@ -44,8 +44,8 @@ void getDrinkSize( short & size )
 		}
 		else if(digitalRead(USER_PIN_3) == 0)
 		{
-            if( size > 1 << 4 )
-                size -= 1 << 4;
+            if( ( size >> 4 ) > 1 )
+                size -= ( 1 << 4 );
             cout << "Oz: " << ( size >> 4 ) << endl;
 			while(digitalRead(USER_PIN_3) == 0);
 		}

@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     main_window.setFixedWidth(480);
     main_window.move(QApplication::desktop()->screen()->rect().center() - main_window.rect().center());
     main_window.show();
+    main_window.showFullScreen();
 
     cout << "Building label for mw" << endl;
 
@@ -95,30 +96,40 @@ void * hwControl( void * )
         pmp_args.pump_num = 0;
         pmp_args.size = 0;
 		
+        state = IDLE;
 		//Prepare data for pump
 		piLock(PMP_KEY);
+
         while ( !( cup_data = cb.GetButtons() ) )
             usleep(500);
+
 		cup_data = seperateService(cup_data);
-		
+
+        state = SELECT_CUP;
+
 		if ( cup_data == DATA_1 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 1) << 4 );
+            pmp_args.cup = 1;
         else if ( cup_data == DATA_2 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 2) << 4 );
+            pmp_args.cup = 2;
         else if ( cup_data == DATA_3 )
-            state = SELECT_SIZE + ( (pmp_args.cup = 3) << 4 );
+            pmp_args.cup = 3;
+
+        state = pmp_args.cup << 4;
+
+        sleep(1);
 		
+        state = SELECT_SIZE;
         getDrinkSize( state );
         cb.SetDrinkSize( pmp_args.size );
 
         state = SELECT_DRINK;
 		getPump(&pmp_args);
 		cb.SetPumpSelect( pmp_args.pump_num );
+
         state = DONE;
 
         cb.ClearButton( cup_data );
         pmp_args.cup = 0;
-        state = IDLE;
 
 		piUnlock(PMP_KEY);
         sleep(5);
